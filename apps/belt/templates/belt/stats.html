@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    {% load static %}
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-dark bg-primary mb-5">
+        <h1 class="navbar-brand" href="#">Hello {{ user.first_name.upper }}!</h1>
+
+        <a class="navbar-brand" href="/belt/logout">Logout</a>
+        <a class="navbar-brand" href="/belt/dashboard">Dashboard
+
+    </nav>
+
+    <!-- USER TRIPS -->
+
+    <div class="container">
+        <h3 class="display-1" >Hello {{ user.first_name.upper }}! Thes are you stats!</h3>
+        <div class="card border-0">
+            <div class="card-body text-dark ">
+                <p class="display-4">Total wishes granted so far from all users: {{all}}</p>
+                <p class="display-4">Your granted wishes:{{ granted }}</p>
+                <p class="display-4">Your pending wishes:{{ pending }}</p>
+            </div>
+        </div>
+    </div>
+</body>

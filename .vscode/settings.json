@@ -1,0 +1,6 @@
+{
+    "python.pythonPath": "/home/rob/.local/share/virtualenvs/belt_exam-Rax3eFlT/bin/python",
+    "python.linting.pylintEnabled": false,
+    "python.linting.pep8Enabled": true,
+    "python.linting.enabled": true
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  {% load static %}
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <title>New Wish</title>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-dark bg-primary mb-5">
+    <h1 class="navbar-brand" href="#">Hello {{ user.first_name.upper }}!</h1>
+
+    <a class="navbar-brand" href="/belt/logout">Logout</a>
+    <a class="navbar-brand" href="/belt/stats">View stats</a>
+  </nav>
+
+  <div class="container">
+    <h2 class="ml-3">Hello {{ user.first_name }}! Make a wish! </h2>
+    <div class="card">
+      <div class="card-body">
+        {% for message in messages %}
+        <li {% if message.tags %} class-"{{ message.tags }}" {% endif %}>
+          {{ message }}
+          {% endfor %}
+          <form class="form" action="/belt/new" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              I wish for:<input type="text" name="item" class="form-control" placeholder="Item">
+              Description:<input type="text" name="description" class="form-control" placeholder="description">
+            <div class="form-group">
+              <a href="/belt/dashboard" class="btn btn-primary">Cancel</a> | <button class="btn btn-primary"
+                type="submit">Submit</button>
+            </div>
+          </form>
+      </div>
+    </div>
+  </div>
+</body>

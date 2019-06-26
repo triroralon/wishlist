@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  {% load static %}
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-dark bg-primary mb-5">
+    <h1 class="navbar-brand" href="#">Hello {{ user.first_name.upper }}!</h1>
+
+    <a class="navbar-brand" href="/belt/logout">Logout</a>
+    <a class="navbar-brand" href="/belt/stats">View stats</a>
+    <a class="navbar-brand" href="/belt/new">Make a wish!</a>
+
+  </nav>
+
+  <!-- USER TRIPS -->
+
+  <div class="container">
+    <h3>{{ user.first_name }}'s wish list:</h3>
+    <table class="table table-hover m-4">
+      <thead>
+        <tr>
+          <th scope="col">Item</th>
+          <th scope="col">Date added</th>
+          <th scope="col">actions</th>
+          <th scope="col">Granted</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for wishes in wish reversed %}
+        {% if user_id == wishes.wish_creator.id %}
+          {% if user_id != wishes.wish_granted.id %}
+          <tr>
+            <td>{{ wishes.item }}</td>
+            <td>{{ wishes.created_at }}</td>
+            <td>
+              <form class="form-group inline" action="/belt/delete" method="POST">
+                {% csrf_token %}
+                <button name="wish_id" value="{{ wishes.id }}" style="margin: 2px;" type="submit"
+                  class="btn btn-primary ">Delete</button>
+              </form>
+              <form class="form-group inline" action="/belt/edit" method="POST">
+                {% csrf_token %}
+                <button name="wish_id" value="{{ wishes.id }}" style="margin: 2px;" type="submit"
+                  class="btn btn-primary">Edit</button>
+              </form>
+            </td>
+            <td>
+              <form class="form-group inline" action="/belt/granted" method="POST">
+                {% csrf_token %}
+                <button name="wish_id" value="{{ wishes.id }}" style="margin: 2px;" type="submit"
+                  class="btn btn-primary">granted</button>
+              </form>
+            </td>
+          </tr>
+          {% endif %}
+        {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+
+
+
+    <!-- ALL granted wishes -->
+    <h3>Granted Wishes:</h3>
+    <table class="table table-hover m-4">
+      <thead>
+        <tr>
+          <th scope="col">Item</th>
+          <th scope="col">Wisher</th>
+          <th scope="col">Date added</th>
+          <th scope="col">Date Granted</th>
+          <th scope="col">Likes</th>
+          <th scope="col">action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for wishes in wish reversed %}
+        {% if wishes.wish_granted.id %}
+        <tr>
+          <td>{{ wishes.item }}</td>
+          <td>{{ wishes.wish_creator.first_name }}</td>
+          <td>{{ wishes.created_at }}</td>
+          <td>{{ wishes.wish_granted_at }}</td>
+          <td>{{ wishes.likes.all|length }}</td>
+          {% if wishes.likes.all|length == 0 and wishes.wish_creator.id != user_id %}
+
+          <td>
+            <form action="/belt/like" method="POST">
+              {% csrf_token %}
+              <button name="wish_id" value="{{ wishes.id }}" style="margin: 2px;" type="submit"
+                class="btn btn-primary">like</button>
+            </form>
+          </td>
+          {% endif %}
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</html>
